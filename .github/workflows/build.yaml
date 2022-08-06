@@ -21,7 +21,7 @@ jobs:
       - name: Unit Test Coverage Check
         run: |
               echo "Threshold is set at: 80 %"
-              cov=$(go tool cover -func=coverage.out | tail -1 | cut -d'     ' -f 11 | cut -d'%' -f 1)
+              cov=$(go tool cover -func=coverage.out | tail -1 | cut -d '     ' -f 11 | cut -d '%' -f 1)
               echo "Current coverage : $cov %"
               if (( 80 < cov)); then
                   echo "OK"
