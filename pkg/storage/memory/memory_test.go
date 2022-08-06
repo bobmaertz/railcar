@@ -16,7 +16,7 @@ func TestGetClient(t *testing.T) {
 
 	actualClient, e := m.GetClient("abcd")
 
-	expectedClient := storage.Client{Id: "abcd"}
+	expectedClient := storage.Client{Id: "abcd", Name: "Mock Test Client", RedirectUris: []string{"http://localhost"}}
 	assert.Nil(t, e)
 	assert.Equal(t, expectedClient, actualClient)
 

@@ -9,7 +9,6 @@ import (
 )
 
 func tokenHandler(s storage.Backend) http.HandlerFunc {
-	// a, _ := authorize.NewAuthorizer(s)
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(build.BuildInfo())

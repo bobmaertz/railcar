@@ -1,18 +1,21 @@
 BINARY_NAME=railcar
 
-build:
-	GOARCH=amd64 GOOS=darwin go build -ldflags="-X 'pkg/build.sha1=$(shell git rev-parse HEAD)' -X 'railcar/pkg/build.buildTime=$(shell date)'" -o ./bin/${BINARY_NAME}-darwin cmd/server/main.go
-	# GOARCH=amd64 GOOS=linux go build -ldflags='-X pkg/build.sha1=$(shell git rev-parse HEAD) -X "railcar/pkg/build.buildTime=$(shell date)"' -o ./bin/${BINARY_NAME}-linux cmd/server/main.go
-	go test ./... 
+build: test 
+	GOARCH=amd64 GOOS=darwin go build \
+		-ldflags="-X 'github.com/bobmaertz/railcar/pkg/build.sha1=$(shell git rev-parse HEAD)' -X 'github.com/bobmaertz/railcar/pkg/build.buildTime=$(shell date)'" \
+		-o ./bin/${BINARY_NAME}-darwin cmd/server/main.go
 
 run:
 	./bin/${BINARY_NAME}-darwin
 
+test: 
+	go test ./... -coverprofile=coverage.out
+
+
 build_and_run: build run
 
-test: 
 clean:
 	go clean
 	rm ./bin/${BINARY_NAME}-darwin
-	rm ./bin/${BINARY_NAME}-linux
+	# rm ./bin/${BINARY_NAME}-linux
 	# rm ./bin/${BINARY_NAME}-windows

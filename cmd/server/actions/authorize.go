@@ -1,7 +1,6 @@
 package actions
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"github.com/bobmaertz/railcar/pkg/authorize"
@@ -21,10 +20,15 @@ func authorizeHandler(s storage.Backend) http.HandlerFunc {
 			RedirectUri:  params.Get("redirect_uri"),
 		}
 
-		a.Authorize(req)
+		uri, oauthErr := a.Authorize(req)
+		if oauthErr != nil {
+			//TODO: Handle this
+		}
+		a, err := http.NewRequest(http.MethodGet, uri, nil)
+		if err != nil {
+			//TODO: Handle this
+		}
 
-		json.NewEncoder(w).Encode("authorize")
-
-		//redirect to callback url
+		http.Redirect(w, a, uri, http.StatusFound)
 	}
 }

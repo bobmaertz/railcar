@@ -9,5 +9,5 @@ import (
 func TestError(t *testing.T) {
 	e := OAuthError{Type: "mock type", Description: "mock description"}
 
-	assert.EqualError(t, e, "type: mock type, description: mock description")
+	assert.Equal(t, e.Error(), "type: mock type, description: mock description")
 }
