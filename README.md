@@ -1,9 +1,6 @@
 # Railcar
 
-Need a client and a server. 
-
-Before doint anything, server should be able to behave as an extendable oauth server. 
-
+Railcar is an extendable oauth server written in Go. Its still under very early development and is not quite ready for use. 
 
 ## Build
 ```
