@@ -21,8 +21,9 @@ func TestAuthorizer_Authorize(t *testing.T) {
 	}
 
 	type fields struct {
-		backend storage.Backend
-		log     logrus.Logger
+		backend              storage.Backend
+		log                  logrus.Logger
+		generateAuthCodeFunc func() (string, error)
 	}
 	type args struct {
 		req Request
@@ -45,6 +46,9 @@ func TestAuthorizer_Authorize(t *testing.T) {
 					return mem
 				}(),
 				log: l,
+				generateAuthCodeFunc: func() (string, error) {
+					return "abcd", nil
+				},
 			},
 			args: args{
 				req: Request{
@@ -152,8 +156,9 @@ func TestAuthorizer_Authorize(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			a := Authorizer{
-				backend: tt.fields.backend,
-				log:     tt.fields.log,
+				backend:              tt.fields.backend,
+				log:                  tt.fields.log,
+				generateAuthCodeFunc: tt.fields.generateAuthCodeFunc,
 			}
 			got, err := a.Authorize(tt.args.req)
 

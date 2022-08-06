@@ -1,6 +1,8 @@
 package authorize
 
 import (
+	"crypto/rand"
+	"fmt"
 	"net/url"
 	"time"
 
@@ -23,12 +25,13 @@ const (
 )
 
 type Authorizer struct {
-	backend storage.Backend
-	log     logrus.Logger //TODO:
+	backend              storage.Backend
+	log                  logrus.Logger //TODO:
+	generateAuthCodeFunc func() (string, error)
 }
 
 func NewAuthorizer(s storage.Backend) (Authorizer, error) {
-	return Authorizer{backend: s}, nil
+	return Authorizer{backend: s, generateAuthCodeFunc: defaultAuthCodeGenerator}, nil
 }
 
 func (a Authorizer) Authorize(req Request) (string, *oauthErr.OAuthError) {
@@ -55,8 +58,13 @@ func (a Authorizer) processAuthCodeRequest(client storage.Client, req Request) (
 		return "", oauthErr.Errors["invalid_request"]
 	}
 
-	code := generateAuthCode()
-	err := a.backend.CreateAuthorizationCode(code, client, time.Now().Add(10*time.Minute))
+	code, err := a.generateAuthCodeFunc()
+	if err != nil {
+		a.log.Errorf("processAuthCodeRequest: unable to create authorization code: %v", err)
+		return "", oauthErr.Errors["server_error"]
+	}
+
+	err = a.backend.CreateAuthorizationCode(code, client, time.Now().Add(10*time.Minute))
 	if err != nil {
 		a.log.Errorf("processAuthCodeRequest: unable to save authorization code: %v", err)
 		return "", oauthErr.Errors["server_error"]
@@ -76,9 +84,16 @@ func (a Authorizer) processAuthCodeRequest(client storage.Client, req Request) (
 	return redirect, nil
 }
 
-func generateAuthCode() string {
-	//Generate random string ..
-	return "abcd"
+func defaultAuthCodeGenerator() (string, error) {
+	n := 16
+	b := make([]byte, n)
+	if _, err := rand.Read(b); err != nil {
+		return "", err
+	}
+
+	s := fmt.Sprintf("%x", b)
+
+	return s, nil
 }
 
 func createRedirectUrl(baseUrl string, queries map[string]string) (string, error) {
