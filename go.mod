@@ -1,8 +1,10 @@
 module github.com/bobmaertz/railcar
 
+//Bump to 1.22
 go 1.18
 
 require (
+	// TODO Reomve me
 	github.com/sirupsen/logrus v1.9.0
 	github.com/stretchr/testify v1.7.2
 	golang.org/x/exp v0.0.0-20220722155223-a9213eeb770e

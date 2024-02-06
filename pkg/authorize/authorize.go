@@ -12,6 +12,11 @@ import (
 	"golang.org/x/exp/slices"
 )
 
+const (
+	AuthorizationCode = "code"
+	ClientCredentials = "client_credentials"
+)
+
 type Request struct {
 	ResponseType string
 	ClientId     string
@@ -19,11 +24,7 @@ type Request struct {
 	RedirectUri  string
 }
 
-const (
-	AuthorizationCode = "code"
-	ClientCredentials = "client_credentials"
-)
-
+//TOOD: Remove logrus in favor of the golang slog 
 type Authorizer struct {
 	backend              storage.Backend
 	log                  logrus.Logger //TODO:
@@ -34,7 +35,7 @@ func NewAuthorizer(s storage.Backend) (Authorizer, error) {
 	return Authorizer{backend: s, generateAuthCodeFunc: defaultAuthCodeGenerator}, nil
 }
 
-func (a Authorizer) Authorize(req Request) (string, *oauthErr.OAuthError) {
+func (a *Authorizer) Authorize(req Request) (string, *oauthErr.OAuthError) {
 
 	//Validate that the client exists
 	client, err := a.backend.GetClient(req.ClientId)
@@ -49,15 +50,16 @@ func (a Authorizer) Authorize(req Request) (string, *oauthErr.OAuthError) {
 	default:
 		return "", oauthErr.Errors["invalid_request"]
 	}
-
 }
 
-func (a Authorizer) processAuthCodeRequest(client storage.Client, req Request) (string, *oauthErr.OAuthError) {
+func (a *Authorizer) processAuthCodeRequest(client storage.Client, req Request) (string, *oauthErr.OAuthError) {
 	//TODO: The spec stays this is optional but leave mandatory for now.
 	if !slices.Contains(client.RedirectUris, req.RedirectUri) {
 		return "", oauthErr.Errors["invalid_request"]
 	}
 
+	//TODO: The only reason we have to reference Authorizer is for this function and the logging,
+	// can this be removed so this function can operate independantly?
 	code, err := a.generateAuthCodeFunc()
 	if err != nil {
 		a.log.Errorf("processAuthCodeRequest: unable to create authorization code: %v", err)
