@@ -18,14 +18,7 @@ jobs:
       - name: Build application using Make
         run: make build
 
-      - name: unit test coverage check
-        run: |
-              echo "threshold is set at: 80 %"
-              cov=$(go tool cover -func=coverage.out | tail -1 | cut -d '     ' -f 11 | cut -d '%' -f 1)
-              echo "current coverage : $cov %"
-              if (( 80 < cov)); then
-                  echo "ok"
-              else
-                  echo "failed"
-                  exit 1
-              fi
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
