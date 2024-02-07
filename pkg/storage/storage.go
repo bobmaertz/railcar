@@ -9,11 +9,7 @@ type Backend interface {
 
 	CreateAuthorizationCode(code string, client Client, expiry time.Time) error
 
-	// RemoveClients(id []string) error
-
-	// GetAuthorizationRequest(id string) (AuthorizationRequest, error)
-	// CreateAuthorizationRequest(id string) error
-	// RemoveAuthorizationRequests(id []string) error
+	CreateSession(userId string, scopes []string, client Client, expiry time.Time) error
 }
 
 type Client struct {
@@ -42,6 +38,14 @@ type AuthorizationCode struct {
 	// Unique identifier authentication request
 	// Id       string
 	Code     string
+	ClientId string
+	Expiry   time.Time
+}
+
+type Session struct {
+	Id       string
+	UserId   string
+	Scopes   []string
 	ClientId string
 	Expiry   time.Time
 }

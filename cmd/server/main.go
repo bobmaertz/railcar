@@ -4,8 +4,10 @@ import (
 	"flag"
 	"fmt"
 	"log"
+    "log/slog"
 	"net/http"
 
+    "os"
 	"github.com/bobmaertz/railcar/cmd/server/actions"
 	"github.com/bobmaertz/railcar/pkg/config"
 )
@@ -22,6 +24,10 @@ func main() {
 	if err != nil {
 		log.Fatalf("could not load config file: %v", err)
 	}
+
+    logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+
+    slog.SetDefault(logger)
 
 	handler, err := actions.App(conf)
 	if err != nil {
