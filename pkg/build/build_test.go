@@ -3,12 +3,12 @@ package build
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/bobmaertz/railcar/pkg/internal/assert"
 )
 
 func TestError(t *testing.T) {
 
 	out := BuildInfo()
 
-	assert.Equal(t, out, "sha1: , buildTime: ")
+	assert.AssertEqual(t, out, "sha1: , buildTime: ")
 }

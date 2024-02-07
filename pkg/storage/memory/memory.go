@@ -7,6 +7,11 @@ import (
 	"github.com/bobmaertz/railcar/pkg/storage"
 )
 
+
+var (
+    NotImplementedError = errors.New("not implemented")
+    NotFoundError = errors.New("not found")
+) 
 type Memory struct {
 	clients []storage.Client
 	codes   []storage.AuthorizationCode
@@ -23,11 +28,11 @@ func (m *Memory) GetClient(id string) (storage.Client, error) {
 			return v, nil
 		}
 	}
-	return storage.Client{}, errors.New("not found")
+	return storage.Client{}, NotFoundError 
 }
 
 func (m *Memory) SaveClient(client storage.Client) error {
-	return errors.New("not implemented")
+	return NotImplementedError
 }
 
 func (m *Memory) CreateAuthorizationCode(code string, client storage.Client, expiry time.Time) error {

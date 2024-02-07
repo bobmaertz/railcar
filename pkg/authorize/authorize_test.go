@@ -6,7 +6,7 @@ import (
 	oauthError "github.com/bobmaertz/railcar/pkg/error"
 	"github.com/bobmaertz/railcar/pkg/storage"
 	"github.com/bobmaertz/railcar/pkg/storage/memory"
-	"github.com/stretchr/testify/assert"
+    "github.com/bobmaertz/railcar/pkg/internal/assert"
 )
 
 func TestAuthorizer_Authorize(t *testing.T) {
@@ -23,7 +23,7 @@ func TestAuthorizer_Authorize(t *testing.T) {
 		fields  fields
 		args    args
 		want    string
-		wantErr error
+		wantErr *oauthError.OAuthError
 	}{
 		{
 			name: "happy path, authorization code is returned",
@@ -147,13 +147,15 @@ func TestAuthorizer_Authorize(t *testing.T) {
 			got, err := a.Authorize(tt.args.req)
 
 			if tt.wantErr != nil {
-				assert.EqualError(t, err, tt.wantErr.Error())
+                assert.AssertEqual(t, err, tt.wantErr) 
 				return
 			}
-			assert.Nil(t, err)
+			assert.AssertNil(t, err)
 			if got != tt.want {
 				t.Errorf("Authorizer.Authorize() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
+
+

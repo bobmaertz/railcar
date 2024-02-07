@@ -11,7 +11,7 @@ run:
 	./bin/${BINARY_NAME}-darwin
 
 test: 
-	go test ./... -coverprofile=coverage.out
+	go test -tags testing ./... -coverprofile=coverage.out
 
 
 build_and_run: build run
