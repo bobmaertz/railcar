@@ -1,3 +1,8 @@
+[![codecov](https://codecov.io/gh/bobmaertz/railcar/graph/badge.svg?token=TYJJI8ZGVJ)](https://codecov.io/gh/bobmaertz/railcar)
+
+
+
+
 # Railcar
 
 Railcar (working name) is an extendable oauth server written in Go. Its still under very early development and is not quite ready for use. 
