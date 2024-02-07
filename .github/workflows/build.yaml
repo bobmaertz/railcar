@@ -12,20 +12,20 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v3
         with:
-          go-version: 1.18
+          go-version: 1.22
           cache: true
 
       - name: Build application using Make
         run: make build
 
-      # - name: Unit Test Coverage Check
-      #   run: |
-      #         echo "Threshold is set at: 80 %"
-      #         cov=$(go tool cover -func=coverage.out | tail -1 | cut -d '     ' -f 11 | cut -d '%' -f 1)
-      #         echo "Current coverage : $cov %"
-      #         if (( 80 < cov)); then
-      #             echo "OK"
-      #         else
-      #             echo "Failed"
-      #             exit 1
-      #         fi
+      - name: unit test coverage check
+        run: |
+              echo "threshold is set at: 80 %"
+              cov=$(go tool cover -func=coverage.out | tail -1 | cut -d '     ' -f 11 | cut -d '%' -f 1)
+              echo "current coverage : $cov %"
+              if (( 80 < cov)); then
+                  echo "ok"
+              else
+                  echo "failed"
+                  exit 1
+              fi

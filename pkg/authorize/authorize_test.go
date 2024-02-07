@@ -1,28 +1,18 @@
 package authorize
 
 import (
-	"os"
 	"testing"
 
 	oauthError "github.com/bobmaertz/railcar/pkg/error"
 	"github.com/bobmaertz/railcar/pkg/storage"
 	"github.com/bobmaertz/railcar/pkg/storage/memory"
-	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestAuthorizer_Authorize(t *testing.T) {
 
-	var l = logrus.Logger{
-		Out:       os.Stderr,
-		Formatter: new(logrus.TextFormatter),
-		Hooks:     make(logrus.LevelHooks),
-		Level:     logrus.DebugLevel,
-	}
-
 	type fields struct {
 		backend              storage.Backend
-		log                  logrus.Logger
 		generateAuthCodeFunc func() (string, error)
 	}
 	type args struct {
@@ -45,7 +35,6 @@ func TestAuthorizer_Authorize(t *testing.T) {
 					}
 					return mem
 				}(),
-				log: l,
 				generateAuthCodeFunc: func() (string, error) {
 					return "abcd", nil
 				},
@@ -71,7 +60,6 @@ func TestAuthorizer_Authorize(t *testing.T) {
 					}
 					return mem
 				}(),
-				log: l,
 			},
 			args: args{
 				req: Request{
@@ -93,7 +81,6 @@ func TestAuthorizer_Authorize(t *testing.T) {
 					}
 					return mem
 				}(),
-				log: l,
 			},
 			args: args{
 				req: Request{
@@ -116,7 +103,6 @@ func TestAuthorizer_Authorize(t *testing.T) {
 					}
 					return mem
 				}(),
-				log: l,
 			},
 			args: args{
 				req: Request{
@@ -139,7 +125,6 @@ func TestAuthorizer_Authorize(t *testing.T) {
 					}
 					return mem
 				}(),
-				log: l,
 			},
 			args: args{
 				req: Request{
@@ -157,7 +142,6 @@ func TestAuthorizer_Authorize(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			a := Authorizer{
 				backend:              tt.fields.backend,
-				log:                  tt.fields.log,
 				generateAuthCodeFunc: tt.fields.generateAuthCodeFunc,
 			}
 			got, err := a.Authorize(tt.args.req)
