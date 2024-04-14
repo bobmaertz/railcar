@@ -11,7 +11,7 @@ This is a project to learn more about the fundamentals of the OAuth RFC from a b
 
 ## Goals 
 - No Dependencies
-- Support for (RFC6749)[https://datatracker.ietf.org/doc/html/rfc6749)
+- Support for [RFC6749](https://datatracker.ietf.org/doc/html/rfc6749)
 ## Build
 ```sh 
 make build 
@@ -28,11 +28,5 @@ or
 
 ```sh 
 make all 
-
 ```
 
-## TODO
- [] Documentation / Examples 
- [] Integration Tests 
- [] Github Actions CI/CD 
- [] Database support 
