@@ -9,6 +9,6 @@ import (
 func defineRoutes(m *http.ServeMux, s storage.Backend) {
 	m.HandleFunc("/version", versionHandler)
 
-	m.HandleFunc("/authorize", authorizeHandler(s))
+	m.HandleFunc("/auth", authorizeHandler(s))
 	m.HandleFunc("/token", tokenHandler(s))
 }

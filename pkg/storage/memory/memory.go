@@ -4,6 +4,8 @@ import (
 	"errors"
 	"time"
 
+
+    "sync"
 	"github.com/bobmaertz/railcar/pkg/storage"
 )
 
@@ -13,18 +15,23 @@ var (
     NotFoundError = errors.New("not found")
 ) 
 type Memory struct {
-	clients []storage.Client
+	clients map[string]storage.Client
 	codes   []storage.AuthorizationCode
 	session []storage.Session
+
+    mu sync.Mutex
 }
 
 func NewMemory() (*Memory, error) {
-	return &Memory{clients: []storage.Client{{Id: "abcd", Name: "Mock Test Client", RedirectUris: []string{"http://localhost"}}}}, nil
+    return &Memory{clients: map[string]storage.Client{"29352735982374239857":{Name: "Mock Test Client", RedirectUris: []string{"http://localhost"}}}}, nil
 }
 
 func (m *Memory) GetClient(id string) (storage.Client, error) {
-	for _, v := range m.clients {
-		if v.Id == id {
+    m.mu.Lock()
+    defer m.mu.Unlock()
+	for k, v := range m.clients {
+		if k == id {
+            v.Id = k
 			return v, nil
 		}
 	}
@@ -32,20 +39,25 @@ func (m *Memory) GetClient(id string) (storage.Client, error) {
 }
 
 func (m *Memory) SaveClient(client storage.Client) error {
-	return NotImplementedError
+    m.mu.Lock()
+    defer m.mu.Unlock()
+
+    m.clients[client.Id] = client
+
+    return nil
 }
 
 func (m *Memory) CreateAuthorizationCode(code string, client storage.Client, expiry time.Time) error {
-
-	//TODO: ensure this is isolated..
+    m.mu.Lock()
+    defer m.mu.Unlock()
 	m.codes = append(m.codes, storage.AuthorizationCode{Code: code, ClientId: client.Id, Expiry: expiry})
 
 	return nil
 }
 
 func (m *Memory) CreateSession(userId string, scopes []string, client storage.Client, expiry time.Time) error {
-
-	//TODO: ensure this is isolated..
+    m.mu.Lock()
+    defer m.mu.Unlock()
 	m.session = append(m.session, storage.Session{UserId: userId, ClientId: client.Id, Expiry: expiry, Scopes: scopes})
 
 	return nil

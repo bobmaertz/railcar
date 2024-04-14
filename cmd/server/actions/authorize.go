@@ -3,6 +3,8 @@ package actions
 import (
 	"net/http"
 
+    "fmt"
+
 	"github.com/bobmaertz/railcar/pkg/authorize"
 	"github.com/bobmaertz/railcar/pkg/storage"
 )
@@ -20,9 +22,11 @@ func authorizeHandler(s storage.Backend) http.HandlerFunc {
 			RedirectUri:  params.Get("redirect_uri"),
 		}
 
+        fmt.Println("Params:" , params)
 		uri, oauthErr := a.Authorize(req)
 		if oauthErr != nil {
 			//TODO: Handle this
+            fmt.Println("Error")
 		}
 		a, err := http.NewRequest(http.MethodGet, uri, nil)
 		if err != nil {

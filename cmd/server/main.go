@@ -41,6 +41,7 @@ func main() {
 		}()
 	}
 
+    slog.Info("Starting server at port 3333")
 	log.Fatal(http.ListenAndServe(":3333", handler))
 
 }

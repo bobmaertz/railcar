@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/bobmaertz/railcar/pkg/storage"
-	"github.com/bobmaertz/railcar/pkg/internal/assert"
+	"github.com/bobmaertz/railcar/internal/assert"
 )
 
 func TestGetClient(t *testing.T) {

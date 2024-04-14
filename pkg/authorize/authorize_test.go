@@ -6,7 +6,7 @@ import (
 	oauthError "github.com/bobmaertz/railcar/pkg/error"
 	"github.com/bobmaertz/railcar/pkg/storage"
 	"github.com/bobmaertz/railcar/pkg/storage/memory"
-    "github.com/bobmaertz/railcar/pkg/internal/assert"
+    "github.com/bobmaertz/railcar/internal/assert"
 )
 
 func TestAuthorizer_Authorize(t *testing.T) {

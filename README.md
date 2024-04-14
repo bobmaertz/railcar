@@ -32,7 +32,7 @@ make all
 ```
 
 ## TODO
-[] Documentation / Examples 
-[] Integration Tests 
-[] Github Actions CI/CD
-[] Database support 
+ [] Documentation / Examples 
+ [] Integration Tests 
+ [] Github Actions CI/CD 
+ [] Database support 

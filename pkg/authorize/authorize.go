@@ -17,10 +17,10 @@ const (
 )
 
 type Request struct {
-	ResponseType string
-	ClientId     string
-	State        string
-	RedirectUri  string
+	ResponseType string `json:"response_type"`
+	ClientId     string `json:"client_id"`
+	State        string `json:"state"`
+	RedirectUri  string `json:"redirect_uri"`
 }
 
 type Authorizer struct {
@@ -32,12 +32,14 @@ func NewAuthorizer(s storage.Backend) (Authorizer, error) {
 	return Authorizer{backend: s, generateAuthCodeFunc: defaultAuthCodeGenerator}, nil
 }
 
+//Authorize validates the authorization_code request and 
 func (a *Authorizer) Authorize(req Request) (string, *oauthErr.OAuthError) {
 
 	//Validate that the client exists
 	client, err := a.backend.GetClient(req.ClientId)
+    slog.Info("clientID", req.ClientId)
 	if err != nil {
-		slog.Warn("Authorize: client is not authorized: %v", err)
+		slog.Warn("Authorize: client is not authorized","error", err)
 		return "", oauthErr.Errors["unauthorized_client"]
 	}
 
@@ -83,6 +85,7 @@ func (a *Authorizer) processAuthCodeRequest(client storage.Client, req Request) 
 	return redirect, nil
 }
 
+//defaultAuthCodeGenerator generates a random 16 byte string for the authorization code
 func defaultAuthCodeGenerator() (string, error) {
 	n := 16
 	b := make([]byte, n)
