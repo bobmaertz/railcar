@@ -3,14 +3,13 @@ package authorize
 import (
 	"testing"
 
+	"github.com/bobmaertz/railcar/internal/assert"
 	oauthError "github.com/bobmaertz/railcar/pkg/error"
 	"github.com/bobmaertz/railcar/pkg/storage"
 	"github.com/bobmaertz/railcar/pkg/storage/memory"
-    "github.com/bobmaertz/railcar/pkg/internal/assert"
 )
 
 func TestAuthorizer_Authorize(t *testing.T) {
-
 	type fields struct {
 		backend              storage.Backend
 		generateAuthCodeFunc func() (string, error)
@@ -33,6 +32,7 @@ func TestAuthorizer_Authorize(t *testing.T) {
 					if err != nil {
 						t.Error(err)
 					}
+
 					return mem
 				}(),
 				generateAuthCodeFunc: func() (string, error) {
@@ -43,7 +43,7 @@ func TestAuthorizer_Authorize(t *testing.T) {
 				req: Request{
 					RedirectUri:  "http://localhost",
 					State:        "abcdef1234",
-					ClientId:     "abcd",
+					ClientId:     "29352735982374239857",
 					ResponseType: "code",
 				},
 			},
@@ -108,7 +108,7 @@ func TestAuthorizer_Authorize(t *testing.T) {
 				req: Request{
 					RedirectUri:  "http://invalid_redirect_url/callback",
 					State:        "abcdef1234",
-					ClientId:     "abcd",
+					ClientId:     "29352735982374239857",
 					ResponseType: "code",
 				},
 			},
@@ -130,7 +130,7 @@ func TestAuthorizer_Authorize(t *testing.T) {
 				req: Request{
 					RedirectUri:  "http://localhost",
 					State:        "abcdef1234",
-					ClientId:     "abcd",
+					ClientId:     "29352735982374239857",
 					ResponseType: "unsupported",
 				},
 			},
@@ -147,7 +147,7 @@ func TestAuthorizer_Authorize(t *testing.T) {
 			got, err := a.Authorize(tt.args.req)
 
 			if tt.wantErr != nil {
-                assert.AssertEqual(t, err, tt.wantErr) 
+				assert.AssertEqual(t, err, tt.wantErr)
 				return
 			}
 			assert.AssertNil(t, err)

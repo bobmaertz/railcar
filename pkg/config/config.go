@@ -1,6 +1,7 @@
 package config
 
 type Config struct {
+    Port int `yaml:"port"`
 	Pprof *PprofConfig `yaml:"pprof,omitempty"`
 }
 
