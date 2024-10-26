@@ -3,7 +3,7 @@ package error
 import (
 	"testing"
 
-	"github.com/bobmaertz/railcar/internal/assert"
+	"github.com/bobmaertz/railcar/pkg/internal/assert"
 )
 
 func TestError(t *testing.T) {
