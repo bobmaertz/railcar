@@ -1,0 +1,22 @@
+
+
+<p>{{define "T"}}AuthCode: {{.}}{{end}}</p>
+
+<p>{{define "E"}}Error: {{.}}{{end}}</p>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title> Auth Code Catcher </title>
+</head>
+<body>
+    <h1>Auth Code Catcher</h1>
+   
+    {{if .Error}}
+    <p> Error: {{ .Error}}</p>
+    {{end}}
+
+    <p>Code: {{ .Code }}</p>
+
+</body>
+</html>
