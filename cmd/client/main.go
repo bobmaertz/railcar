@@ -33,7 +33,7 @@ func main() {
 			}
 			err = tmpl.Execute(w, acr)
 			if err != nil {
-				fmt.Println("template error execution: %v", err)
+				fmt.Printf("template error execution: %v\n", err)
 				return
 			}
 
