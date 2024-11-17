@@ -8,8 +8,9 @@ import (
 )
 
 type AuthCodeRequest struct {
-	Code  string
-	Error string
+	Code             string
+	Error            string
+	ErrorDescription string
 }
 
 func main() {
